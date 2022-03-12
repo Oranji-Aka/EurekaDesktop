@@ -4,6 +4,7 @@
   "main": "main.js",
   "private": true,
   "dependencies": {
-    "@electron/remote": "1.0.4"
+    "@electron/remote": "1.0.4",
+    "google-auth-library": "^7.1.0"
   }
 }

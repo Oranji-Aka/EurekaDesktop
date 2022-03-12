@@ -1,4 +1,6 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain, webContents   } from 'electron';
+import { GoogleAuth, OAuth2Client, JWT, LoginTicket } from 'google-auth-library';
+
 import * as path from 'path';
 import * as url from 'url';
 
@@ -18,8 +20,8 @@ function createWindow(): BrowserWindow {
   win = new BrowserWindow({
     x: 0,
     y: 0,
-    width: size.width,
-    height: size.height,
+    width: size.width/2,
+    height: size.height/2,
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,
@@ -27,10 +29,9 @@ function createWindow(): BrowserWindow {
       enableRemoteModule : true // true if you want to run 2e2 test  with Spectron or use remote module in renderer context (ie. Angular)
     },
   });
+  win.webContents.openDevTools();
 
   if (serve) {
-
-    win.webContents.openDevTools();
 
     require('electron-reload')(__dirname, {
       electron: require(`${__dirname}/../node_modules/electron`)
@@ -79,6 +80,14 @@ try {
       createWindow();
     }
   });
+
+  
+  app.on('login', (event, webContents, details, authInfo, callback) => {
+    event.preventDefault()
+    callback('username', 'secret')
+  })
+  
+  ipcMain.on('login', (event, arg)=>{});
 
 } catch (e) {
   // Catch Error
